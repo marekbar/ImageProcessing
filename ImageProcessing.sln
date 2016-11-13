@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessing", "ImageProcessing\ImageProcessing.csproj", "{06148CCF-A10A-4952-8488-646CF5F9A01C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessingTests", "ImageProcessingTests\ImageProcessingTests.csproj", "{621DFC60-47D7-4A2B-9243-DDAC03913920}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleEditor", "SimpleEditor\SimpleEditor.csproj", "{5AD32106-FB0F-4C8F-A405-CA62CAFD12FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06148CCF-A10A-4952-8488-646CF5F9A01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06148CCF-A10A-4952-8488-646CF5F9A01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06148CCF-A10A-4952-8488-646CF5F9A01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06148CCF-A10A-4952-8488-646CF5F9A01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{621DFC60-47D7-4A2B-9243-DDAC03913920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{621DFC60-47D7-4A2B-9243-DDAC03913920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{621DFC60-47D7-4A2B-9243-DDAC03913920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{621DFC60-47D7-4A2B-9243-DDAC03913920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AD32106-FB0F-4C8F-A405-CA62CAFD12FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AD32106-FB0F-4C8F-A405-CA62CAFD12FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AD32106-FB0F-4C8F-A405-CA62CAFD12FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AD32106-FB0F-4C8F-A405-CA62CAFD12FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
