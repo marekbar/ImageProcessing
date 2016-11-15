@@ -32,12 +32,20 @@ namespace SimpleEditor
             operation.OnImageLoaded += Operation_OnImageLoaded;
             operation.OnImageChanged += Operation_OnImageChanged;
             operation.OnError += Operation_OnError;
-            operation.OnExecuted += Operation_OnExecuted;
+            operation.OnExecuted += Operation_OnExecuted1;
         }
 
-        private void Operation_OnExecuted(string message)
+        private void Operation_OnExecuted1(string message, Dictionary<string, int> history)
         {
             status.Text = message;
+            menuHistory.DropDownItems.Clear();
+            foreach(var h in history)
+            {
+                var t = new ToolStripMenuItem();
+                t.Text = (h.Value+1).ToString() + " " + h.Key;
+                menuHistory.DropDownItems.Add(t);
+            }
+            
         }
 
         private void Operation_OnError(string message)
@@ -56,6 +64,7 @@ namespace SimpleEditor
             var categories = availableActions.Select(s => s.Category).Distinct().ToList();
             this.menu.Items.Clear();
             this.menu.Items.Add(menuOpen);
+            this.menu.Items.Add(menuHistory);
             foreach (var category in categories)
             {
                 var menu = new ToolStripMenuItem();

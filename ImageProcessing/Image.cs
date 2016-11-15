@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -10,6 +11,11 @@ namespace ImageProcessing
         Green = 1,
         Blue = 0
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <see cref="http://www.algorytm.org/przetwarzanie-obrazow/"/>
     public class Image
     {
         private const double RedSaturation = 0.299;
@@ -18,10 +24,13 @@ namespace ImageProcessing
         private const float FloatValue255 = 255.0f;
         private string filename;
         private Bitmap bmp;
+        public Bitmap OriginalImage { get; private set; }
+
         public Image(string filename)
         {
             this.filename = filename;
             bmp = new Bitmap(this.filename);
+            OriginalImage = (Bitmap)bmp.Clone();
             PixelSize = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
             rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
         }
@@ -118,6 +127,38 @@ namespace ImageProcessing
                 data.ReturnBytes(bytes);
                 bmp.UnlockBits(data);
             }
+        }
+
+        public void AdjustBrightness(int level)
+        {
+            if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
+            {
+                BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
+                byte[] bytes = data.GetBytesFromImage();
+
+                byte[] LUT = BuildBrightnessLUT(level);
+                int i = 0;
+                while (i < bytes.Length)
+                {
+                    bytes[i] = LUT[bytes[i]];
+                    i += 3;
+                }
+
+                data.ReturnBytes(bytes);
+                bmp.UnlockBits(data);
+            }
+        }
+
+        private static byte[] BuildBrightnessLUT(int level)
+        {
+            byte[] LUT = new byte[256];
+            int i = 0;
+            while (i < LUT.Length)
+            {
+                LUT[i] = (byte)(((level + i) > 255) ? 255 : (((level + i) < 0) ? 0 : (level + i)));
+                i++;
+            }
+            return LUT;
         }
 
         public void RemoveColor(ColorChoice color)

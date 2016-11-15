@@ -126,6 +126,15 @@
   <data name="BlackAndWhite" xml:space="preserve">
     <value>Konwertuj na czarno-biały</value>
   </data>
+  <data name="BrightnessEdition" xml:space="preserve">
+    <value>Jasność</value>
+  </data>
+  <data name="BrightnessMinus10" xml:space="preserve">
+    <value>jasność -10</value>
+  </data>
+  <data name="BrightnessPlus10" xml:space="preserve">
+    <value>jasność +10</value>
+  </data>
   <data name="ColorEdition" xml:space="preserve">
     <value>Kolory</value>
   </data>

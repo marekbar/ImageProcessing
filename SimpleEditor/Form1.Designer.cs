@@ -31,9 +31,10 @@
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.strip = new System.Windows.Forms.StatusStrip();
+            this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.status = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuHistory = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.strip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -42,7 +43,8 @@
             // menu
             // 
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuOpen});
+            this.menuOpen,
+            this.menuHistory});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
             this.menu.Size = new System.Drawing.Size(616, 24);
@@ -67,6 +69,11 @@
             this.strip.TabIndex = 1;
             this.strip.Text = "statusStrip1";
             // 
+            // status
+            // 
+            this.status.Name = "status";
+            this.status.Size = new System.Drawing.Size(0, 17);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -81,10 +88,11 @@
             // 
             this.openFileDialog1.FileName = "OpenFile";
             // 
-            // status
+            // menuHistory
             // 
-            this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(0, 17);
+            this.menuHistory.Name = "menuHistory";
+            this.menuHistory.Size = new System.Drawing.Size(60, 20);
+            this.menuHistory.Text = "Historia";
             // 
             // MainWindow
             // 
@@ -116,6 +124,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuOpen;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripStatusLabel status;
+        private System.Windows.Forms.ToolStripMenuItem menuHistory;
     }
 }
 

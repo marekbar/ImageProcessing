@@ -88,6 +88,33 @@ namespace ImageProcessing.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jasność.
+        /// </summary>
+        internal static string BrightnessEdition {
+            get {
+                return ResourceManager.GetString("BrightnessEdition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jasność -10.
+        /// </summary>
+        internal static string BrightnessMinus10 {
+            get {
+                return ResourceManager.GetString("BrightnessMinus10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jasność +10.
+        /// </summary>
+        internal static string BrightnessPlus10 {
+            get {
+                return ResourceManager.GetString("BrightnessPlus10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kolory.
         /// </summary>
         internal static string ColorEdition {

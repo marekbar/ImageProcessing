@@ -9,6 +9,22 @@ namespace ImageProcessing
 {
     public class ImageOperation
     {
+        private List<KeyValuePair<string, Bitmap>> Operations = new List<KeyValuePair<string, Bitmap>>();
+        private Dictionary<string,int> History
+        {
+            get
+            {
+                Dictionary<string, int> h = new Dictionary<string, int>();
+                for(int i = 0; i < Operations.Count; i++)
+                {
+                    var name = (typeof(ImageOperation).GetMethod(Operations[i].Key).GetCustomAttributes(typeof(ForMenuAttribute)).ToArray()[0] as ForMenuAttribute)
+                        .NameText;
+                    h[name] = i;
+                }
+                return h;
+            }
+        }
+
         public delegate void ImageLoaded(Bitmap image, List<Action> availableActions);
         public event ImageLoaded OnImageLoaded;
 
@@ -18,7 +34,7 @@ namespace ImageProcessing
         public delegate void Error(string message);
         public event Error OnError;
 
-        public delegate void Executed(string message);
+        public delegate void Executed(string message, Dictionary<string, int> history);
         public event Executed OnExecuted;
 
         private Image img;
@@ -26,6 +42,11 @@ namespace ImageProcessing
         {
             img = new Image(filename);
             OnImageLoaded?.Invoke(img.GetCopy(), ListOperations());
+        }
+
+        public ImageOperation()
+        {
+            
         }
 
         private List<Action> ListOperations()
@@ -61,11 +82,12 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(Grayscale), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.ToGrayScale();
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)
@@ -79,11 +101,12 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(AdjustContrast1), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.AdjustContrast(1);
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)
@@ -97,11 +120,12 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(AdjustContrast5), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.AdjustContrast(5);
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)
@@ -115,11 +139,50 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(AdjustContrast10), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.AdjustContrast(10);
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
+                OnImageChanged?.Invoke(img.GetCopy());
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(ex.Message);
+            }
+        }
+
+        [ForMenu(Category = "BrightnessEdition", Name = "BrightnessPlus10", ResourceType = typeof(Resources.Resource))]
+        public void AdjustBrightnessPlus10()
+        {
+            try
+            {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(AdjustBrightnessPlus10), img.GetCopy()));
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                img.AdjustBrightness(10);
+                sw.Stop();
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
+                OnImageChanged?.Invoke(img.GetCopy());
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(ex.Message);
+            }
+        }
+
+        [ForMenu(Category = "BrightnessEdition", Name = "BrightnessMinus10", ResourceType = typeof(Resources.Resource))]
+        public void AdjustBrightnessMinus10()
+        {
+            try
+            {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(AdjustBrightnessMinus10), img.GetCopy()));
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                img.AdjustBrightness(-10);
+                sw.Stop();
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)
@@ -133,11 +196,12 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(RemoveGreen), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.RemoveColor(ColorChoice.Green);
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)
@@ -151,11 +215,12 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(RemoveRed), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.RemoveColor(ColorChoice.Red);
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)
@@ -169,11 +234,12 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(RemoveBlue), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.RemoveColor(ColorChoice.Blue);
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)
@@ -187,11 +253,12 @@ namespace ImageProcessing
         {
             try
             {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(BlackAndWhite), img.GetCopy()));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.ToBlackOrWhiteScale(128);
                 sw.Stop();
-                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms");
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());
             }
             catch (Exception ex)

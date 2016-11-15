@@ -44,6 +44,7 @@
     <Compile Include="Action.cs" />
     <Compile Include="BitmapDataExtensions.cs" />
     <Compile Include="ForMenuAttribute.cs" />
+    <Compile Include="HSV.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="ImageOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,6 +54,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="RGB.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Resource.resx">
