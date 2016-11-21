@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageProcessing.Filters;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -124,6 +125,82 @@ namespace ImageProcessing
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 img.AdjustContrast(5);
+                sw.Stop();
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
+                OnImageChanged?.Invoke(img.GetCopy());
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(ex.Message);
+            }
+        }
+
+        [ForMenu(Category = "FiltersMenu", Name = "FilterSharpen", ResourceType = typeof(Resources.Resource))]
+        public void Sharpen()
+        {
+            try
+            {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(Sharpen), img.GetCopy()));
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                img.FilterImage(FilterFactory.Sharpen);
+                sw.Stop();
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
+                OnImageChanged?.Invoke(img.GetCopy());
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(ex.Message);
+            }
+        }
+
+        [ForMenu(Category = "FiltersMenu", Name = "FilterAverage", ResourceType = typeof(Resources.Resource))]
+        public void Average()
+        {
+            try
+            {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(Average), img.GetCopy()));
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                img.FilterImage(FilterFactory.AverageFilter);
+                sw.Stop();
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
+                OnImageChanged?.Invoke(img.GetCopy());
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(ex.Message);
+            }
+        }
+
+        [ForMenu(Category = "FiltersMenu", Name = "FilterSobleHorizontal", ResourceType = typeof(Resources.Resource))]
+        public void SobelHorizontal()
+        {
+            try
+            {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(SobelHorizontal), img.GetCopy()));
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                img.FilterImage(FilterFactory.EdgesSobelHorizontal);
+                sw.Stop();
+                OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
+                OnImageChanged?.Invoke(img.GetCopy());
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(ex.Message);
+            }
+        }
+
+        [ForMenu(Category ="FiltersMenu", Name = "EmbossEast", ResourceType = typeof(Resources.Resource))]
+        public void EmbossEast()
+        {
+            try
+            {
+                Operations.Add(new KeyValuePair<string, Bitmap>(nameof(EmbossEast), img.GetCopy()));
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                img.FilterImage(FilterFactory.EmbossEast);
                 sw.Stop();
                 OnExecuted?.Invoke(sw.ElapsedMilliseconds.ToString() + "ms", History);
                 OnImageChanged?.Invoke(img.GetCopy());

@@ -30,11 +30,12 @@
         {
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuHistory = new System.Windows.Forms.ToolStripMenuItem();
             this.strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.menuHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this.worker = new System.ComponentModel.BackgroundWorker();
             this.menu.SuspendLayout();
             this.strip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -58,6 +59,12 @@
             this.menuOpen.Size = new System.Drawing.Size(57, 20);
             this.menuOpen.Text = "Otwórz";
             this.menuOpen.Click += new System.EventHandler(this.menuOpen_Click);
+            // 
+            // menuHistory
+            // 
+            this.menuHistory.Name = "menuHistory";
+            this.menuHistory.Size = new System.Drawing.Size(60, 20);
+            this.menuHistory.Text = "Historia";
             // 
             // strip
             // 
@@ -88,11 +95,12 @@
             // 
             this.openFileDialog1.FileName = "OpenFile";
             // 
-            // menuHistory
+            // worker
             // 
-            this.menuHistory.Name = "menuHistory";
-            this.menuHistory.Size = new System.Drawing.Size(60, 20);
-            this.menuHistory.Text = "Historia";
+            this.worker.WorkerReportsProgress = true;
+            this.worker.WorkerSupportsCancellation = true;
+            this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.worker_DoWork);
+            this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.worker_RunWorkerCompleted);
             // 
             // MainWindow
             // 
@@ -102,6 +110,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.strip);
             this.Controls.Add(this.menu);
+            this.DoubleBuffered = true;
             this.MainMenuStrip = this.menu;
             this.Name = "MainWindow";
             this.Text = "Edytor";
@@ -125,6 +134,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripStatusLabel status;
         private System.Windows.Forms.ToolStripMenuItem menuHistory;
+        private System.ComponentModel.BackgroundWorker worker;
     }
 }
 

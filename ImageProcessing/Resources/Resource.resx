@@ -150,6 +150,18 @@
   <data name="ContrastEdition" xml:space="preserve">
     <value>Kontrast</value>
   </data>
+  <data name="FilterAverage" xml:space="preserve">
+    <value>Wygładź</value>
+  </data>
+  <data name="FilterSharpen" xml:space="preserve">
+    <value>Wyostrz obraz</value>
+  </data>
+  <data name="FiltersMenu" xml:space="preserve">
+    <value>Filtry</value>
+  </data>
+  <data name="FilterSobleHorizontal" xml:space="preserve">
+    <value>Wyostrz krawędzie w poziomie</value>
+  </data>
   <data name="Grayscale" xml:space="preserve">
     <value>Konwertuj na odcienie szarości</value>
   </data>
@@ -161,5 +173,8 @@
   </data>
   <data name="RemoveRed" xml:space="preserve">
     <value>Usuń czerwony</value>
+  </data>
+  <data name="EmbossEast" xml:space="preserve">
+    <value>Uwypuklij w lewo</value>
   </data>
 </root>

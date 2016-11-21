@@ -43,7 +43,12 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="BitmapDataExtensions.cs" />
-    <Compile Include="ForMenuAttribute.cs" />
+    <Compile Include="Enums\ColorChoice.cs" />
+    <Compile Include="Enums\ColorSaturation.cs" />
+    <Compile Include="Enums\ColorShift.cs" />
+    <Compile Include="Filters\FilterFactory.cs" />
+    <Compile Include="Filters\FilterMatrix.cs" />
+    <Compile Include="Attributes\ForMenuAttribute.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="ImageOperation.cs" />

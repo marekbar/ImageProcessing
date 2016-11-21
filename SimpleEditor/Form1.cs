@@ -39,13 +39,13 @@ namespace SimpleEditor
         {
             status.Text = message;
             menuHistory.DropDownItems.Clear();
-            foreach(var h in history)
+            foreach (var h in history)
             {
                 var t = new ToolStripMenuItem();
-                t.Text = (h.Value+1).ToString() + " " + h.Key;
+                t.Text = (h.Value + 1).ToString() + " " + h.Key;
                 menuHistory.DropDownItems.Add(t);
             }
-            
+
         }
 
         private void Operation_OnError(string message)
@@ -78,12 +78,12 @@ namespace SimpleEditor
                     menu.DropDownItems.Add(pos);
                 }
                 this.menu.Items.Add(menu);
-            }            
+            }
         }
 
         private void ActionClick(object obj, EventArgs args)
         {
-            ToolStripMenuItem pos = (ToolStripMenuItem)obj;
+            ToolStripMenuItem pos = obj as ToolStripMenuItem;
             var name = pos.Name;
             var ot = operation.GetType();
             var mi = ot.GetMethod(name);
@@ -91,6 +91,16 @@ namespace SimpleEditor
         }
 
         private void menuEdition_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+           
+        }
+
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
         }

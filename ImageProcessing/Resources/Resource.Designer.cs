@@ -160,6 +160,51 @@ namespace ImageProcessing.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uwypuklij w lewo.
+        /// </summary>
+        internal static string EmbossEast {
+            get {
+                return ResourceManager.GetString("EmbossEast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wygładź.
+        /// </summary>
+        internal static string FilterAverage {
+            get {
+                return ResourceManager.GetString("FilterAverage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wyostrz obraz.
+        /// </summary>
+        internal static string FilterSharpen {
+            get {
+                return ResourceManager.GetString("FilterSharpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filtry.
+        /// </summary>
+        internal static string FiltersMenu {
+            get {
+                return ResourceManager.GetString("FiltersMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wyostrz krawędzie w poziomie.
+        /// </summary>
+        internal static string FilterSobleHorizontal {
+            get {
+                return ResourceManager.GetString("FilterSobleHorizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Konwertuj na odcienie szarości.
         /// </summary>
         internal static string Grayscale {

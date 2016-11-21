@@ -1,30 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ImageProcessing.Enums;
+using ImageProcessing.Filters;
 using System.Drawing;
 using System.Drawing.Imaging;
-
 namespace ImageProcessing
-{
-    public enum ColorChoice
-    {
-        Red = 2,
-        Green = 1,
-        Blue = 0
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <see cref="http://www.algorytm.org/przetwarzanie-obrazow/"/>
+{  
     public class Image
-    {
-        private const double RedSaturation = 0.299;
-        private const double GreenSaturation = 0.587;
-        private const double BlueSaturation = 0.114;
-        private const float FloatValue255 = 255.0f;
+    {    
         private string filename;
         private Bitmap bmp;
         public Bitmap OriginalImage { get; private set; }
+        private BitmapData data;
+        private byte[] bytes;
 
         public Image(string filename)
         {
@@ -43,12 +29,23 @@ namespace ImageProcessing
         private int PixelSize;
         private Rectangle rect;
 
+        private void AccessImageData()
+        {
+            data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
+            bytes = data.GetBytesFromImage();
+        }
+
+        private void ReleaseImageData(byte[] byteArray = null)
+        {
+            data.ReturnBytes(byteArray != null ? byteArray : bytes);
+            bmp.UnlockBits(data);
+        }
+
         public void ToGrayScale()
         {
             if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
             {
-                BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
-                byte[] bytes = data.GetBytesFromImage();
+                AccessImageData();
 
                 double red;
                 double green;
@@ -58,16 +55,14 @@ namespace ImageProcessing
                 int i = 0;
                 while (i < bytes.Length)
                 {
-                    blue = bytes[i];
-                    green = bytes[i + 1];
-                    red = bytes[i + 2];
-                    gray = (byte)(RedSaturation * red + GreenSaturation * green + BlueSaturation * blue);
-                    bytes[i] = bytes[i + 1] = bytes[i + 2] = gray;
-                    i += 3;
+                    blue = bytes[i + ColorShift.Blue];
+                    green = bytes[i + ColorShift.Green];
+                    red = bytes[i + ColorShift.Red];
+                    gray = (byte)(ColorSaturation.Red * red + ColorSaturation.Green * green + ColorSaturation.Blue * blue);
+                    bytes[i + ColorShift.Blue] = bytes[i + ColorShift.Green] = bytes[i + ColorShift.Red] = gray;
+                    i += PixelSize;
                 }
-
-                data.ReturnBytes(bytes);
-                bmp.UnlockBits(data);
+                ReleaseImageData();
             }
         }
 
@@ -75,24 +70,20 @@ namespace ImageProcessing
         {
             if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
             {
-                BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
-                byte[] bytes = data.GetBytesFromImage();
-
+                AccessImageData();
                 int i = 0;
                 while (i < bytes.Length)
                 {
-                    bytes[i] = bytes[i + 1] = bytes[i + 2] =
+                    bytes[i + ColorShift.Blue] = bytes[i + ColorShift.Green] = bytes[i + ColorShift.Red] =
                         (byte)(
                         (
-                            RedSaturation * bytes[i + 2] +
-                            GreenSaturation * bytes[i + 1] +
-                            BlueSaturation * bytes[i]
+                            ColorSaturation.Red * bytes[i + ColorShift.Red] +
+                            ColorSaturation.Green * bytes[i + ColorShift.Green] +
+                            ColorSaturation.Blue * bytes[i + ColorShift.Blue]
                         ) > treshold ? 255 : 0);
-                    i += 3;
+                    i += PixelSize;
                 }
-
-                data.ReturnBytes(bytes);
-                bmp.UnlockBits(data);
+                ReleaseImageData();
             }
         }
 
@@ -100,32 +91,29 @@ namespace ImageProcessing
         {
             if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
             {
-                BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
-                byte[] bytes = data.GetBytesFromImage();
-
+                AccessImageData();
                 int i = 0;
-                float red, green, blue;                
+                float red, green, blue;
                 value = (100.0f + value) / 100.0f;
-                value *= value;
+                value *= value;                 
                 while (i < bytes.Length)
                 {
-                    red = bytes[i + 2]/ FloatValue255;
-                    green = bytes[i + 1]/ FloatValue255;
-                    blue = bytes[i]/ FloatValue255;
-                   
-                    red = (((red - 0.5f) * value) + 0.5f) * FloatValue255;
-                    green = (((green - 0.5f) * value) + 0.5f) * FloatValue255;
-                    blue = (((blue - 0.5f) * value) + 0.5f) * FloatValue255;
-                                       
-                    bytes[i + 2] = (byte)(red > 255 ? 255 : red < 0 ? 0 : red);                                       
-                    bytes[i + 1] = (byte)(green > 255 ? 255 : green < 0 ? 0 : green);                                     
-                    bytes[i] = (byte)(blue > 255 ? 255 : blue < 0 ? 0 : blue);                                                                       
+                    red = bytes[i + ColorShift.Red] / 255.0f;
+                    green = bytes[i + ColorShift.Green] / 255.0f;
+                    blue = bytes[i + ColorShift.Blue] / 255.0f;
 
-                    i += 3;
+                    red = (((red - 0.5f) * value) + 0.5f) * 255.0f;
+                    green = (((green - 0.5f) * value) + 0.5f) * 255.0f;
+                    blue = (((blue - 0.5f) * value) + 0.5f) * 255.0f;
+
+                    bytes[i + ColorShift.Red] = (byte)(red > 255 ? 255 : red < 0 ? 0 : red);
+                    bytes[i + ColorShift.Green] = (byte)(green > 255 ? 255 : green < 0 ? 0 : green);
+                    bytes[i + ColorShift.Blue] = (byte)(blue > 255 ? 255 : blue < 0 ? 0 : blue);
+
+                    i += PixelSize;
                 }
 
-                data.ReturnBytes(bytes);
-                bmp.UnlockBits(data);
+                ReleaseImageData();
             }
         }
 
@@ -133,19 +121,15 @@ namespace ImageProcessing
         {
             if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
             {
-                BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
-                byte[] bytes = data.GetBytesFromImage();
-
+                AccessImageData();
                 byte[] LUT = BuildBrightnessLUT(level);
                 int i = 0;
                 while (i < bytes.Length)
                 {
                     bytes[i] = LUT[bytes[i]];
-                    i += 3;
+                    i += PixelSize;
                 }
-
-                data.ReturnBytes(bytes);
-                bmp.UnlockBits(data);
+                ReleaseImageData();
             }
         }
 
@@ -165,18 +149,15 @@ namespace ImageProcessing
         {
             if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
             {
-                BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);                
-                byte[] bytes = data.GetBytesFromImage();
+                AccessImageData();
                 int i = 0;
                 int c = (int)color;
                 while (i < bytes.Length)
                 {
                     bytes[i + c] = 0;
-                    i += 3;
+                    i += PixelSize;
                 }
-                data.ReturnBytes(bytes);                                                        
-
-                bmp.UnlockBits(data);
+                ReleaseImageData();
             }
         }
 
@@ -184,29 +165,72 @@ namespace ImageProcessing
         {
             if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
             {
-                BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
-                byte[] bytes = data.GetBytesFromImage();
+                AccessImageData();
                 int i = 0;
                 byte zero = 0;
                 int c = (int)color;
                 while (i < bytes.Length)
                 {
-                    bytes[i + c] = (byte)((bytes[i+c]-value)> zero ? bytes[i+c] - value : zero);
-                    bytes[i+c] = (byte)((bytes[i+c] - value) > zero ? bytes[i+c] - value : zero);
-                    bytes[i+c] = (byte)((bytes[i+c] - value) > zero ? bytes[i+c] - value : zero);
-                    i += 3;
+                    bytes[i + c] = (byte)((bytes[i + c] - value) > zero ? bytes[i + c] - value : zero);
+                    i += PixelSize;
                 }
-                data.ReturnBytes(bytes);
-
-                bmp.UnlockBits(data);
+                ReleaseImageData();
             }
         }
 
+        public void FilterImage(FilterMatrix filter)
+        {
+            if (bmp.PixelFormat == PixelFormat.Format24bppRgb && PixelSize == 3)
+            {
+                if (filter.Factor == 0)
+                    return;
+                AccessImageData();
+                byte[] processed = new byte[bytes.Length];
 
+                double blue = 0.0, green = 0.0, red = 0.0;
+
+                int fo = filter.Offset;
+                int indexOffset = 0,byteOffset = 0,ds = data.Stride;
+                int y, x, fx, fy;
+                for (y = fo; y < data.Height - fo; y++)
+                {
+                    for (x = fo; x < data.Width - fo; x++)
+                    {
+                        blue = green = red = 0;
+
+                        byteOffset = y * ds + x * PixelSize;
+
+                        for (fy = -fo; fy <= fo; fy++)
+                        {
+                            for (fx = -fo; fx <= fo; fx++)
+                            {
+                                indexOffset = byteOffset + fx * PixelSize + fy * ds;
+
+                                blue += bytes[indexOffset + ColorShift.Blue] * filter[fy + fo, fx + fo];
+                                green += bytes[indexOffset + ColorShift.Green] * filter[fy + fo, fx + fo];
+                                red += bytes[indexOffset + ColorShift.Red] * filter[fy + fo, fx + fo];
+                            }
+                        }
+
+                        blue = blue * filter.Factor + fo;
+                        green = green * filter.Factor + fo;
+                        red = red * filter.Factor + fo;
+                        if (blue > 255) blue = 255;if (blue < 0) blue = 0;
+                        if (green > 255) green = 255; if (green < 0) green = 0;
+                        if (red > 255) red = 255; if (red < 0) red = 0;                      
+
+                        processed[byteOffset + ColorShift.Blue] = (byte)(blue);
+                        processed[byteOffset + ColorShift.Green] = (byte)(green);
+                        processed[byteOffset + ColorShift.Red] = (byte)(red);
+                    }
+                }
+                ReleaseImageData(processed);
+            }
+        }
 
         public void Save(string filename)
         {
-            this.bmp.Save(filename);
+            bmp.Save(filename);
         }
     }
 }
