@@ -1,64 +1,71 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ImageProcessing;
+using System.Drawing;
+using ImageProcessing.ImageOperations;
 
 namespace ImageProcessingTests
 {
     [TestClass]
     public class TestImage
     {
+        private string file;
+        public TestImage()
+        {
+            file = AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg";
+        }
         [TestMethod]
         public void OpenImageFile()
         {                        
-            var image = new Image(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg");
-            image.ToGrayScale();
+            var image = new Bitmap(file);
+            image.Grayscale();
             image.Save(@"C:\Users\marek\Desktop\test.bmp");
         }
 
         [TestMethod]
         public void ToGrayscale()
         {
-            var image = new Image(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg");
-            image.ToGrayScale();
+           var image = new Bitmap(file);
+            image.Grayscale();
             image.Save(@"C:\Users\marek\Desktop\test.bmp");
         }
 
         [TestMethod]
         public void RemoveGreen()
         {
-            var image = new Image(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg");
-            image.RemoveColor(ColorChoice.Green);
+           var image = new Bitmap(file);
+            image.ColorRemove(ColorChoice.Green);
             image.Save(@"C:\Users\marek\Desktop\test.bmp");
         }
 
         [TestMethod]
         public void RemoveRed()
         {
-            var image = new Image(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg");
-            image.RemoveColor(ColorChoice.Red);
+           var image = new Bitmap(file);
+            image.ColorRemove(ColorChoice.Red);
             image.Save(@"C:\Users\marek\Desktop\test.bmp");
         }
 
         [TestMethod]
         public void RemoveBlue()
         {
-            var image = new Image(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg");
-            image.RemoveColor(ColorChoice.Blue);
+           var image = new Bitmap(file);
+            image.ColorRemove(ColorChoice.Blue);
             image.Save(@"C:\Users\marek\Desktop\test.bmp");
         }
 
         [TestMethod]
         public void ToBlackAndWhite()
         {
-            var image = new Image(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg");
-            image.ToBlackOrWhiteScale(128);
+           var image = new Bitmap(file);
+            image.BlackWhite(128);
             image.Save(@"C:\Users\marek\Desktop\test.bmp");
         }
 
         [TestMethod]
         public void MinusValue()
         {
-            var image = new Image(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Images\image1.jpg");
+           var image = new Bitmap(file);
             image.MinusValue(ColorChoice.Blue, 28);
             image.MinusValue(ColorChoice.Green, 128);
             image.MinusValue(ColorChoice.Red, 60);
